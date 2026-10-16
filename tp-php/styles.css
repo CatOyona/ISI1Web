@@ -3,5 +3,17 @@ table, th, td {
 }
 
 .echec {
-    background-color: red;
+  background-color: red;
+}
+
+.formulaire {
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto; 
+  margin-top: 50px;
+  width:250px;
+}
+
+input, label, textarea {
+  margin: 5px;
 }

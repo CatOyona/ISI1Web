@@ -20,8 +20,17 @@
         public string $nom,
         public float $note,
         ) {}
+
         public function mention(): Mention {
             return Mention::depuisNote($this->note);
+        }
+
+        public function estAdmis(): bool {
+            $mension = $this->mention();
+            if ($mension === Mention::Ajourne) {
+                return true;
+            }
+            return false;
         }
     }
     #$ada = new Etudiant(nom: 'Ada', note: 15.5);

@@ -61,4 +61,13 @@
         }
         return $min;
     }
+
+    function h(string $texte): string {
+        return htmlspecialchars($texte, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+    }
+    
+    function champ(string $cle): string {
+        $valeur = h($_POST[$cle]) ?? '';
+        return is_string($valeur) ? trim($valeur) : '';
+    }
 ?>

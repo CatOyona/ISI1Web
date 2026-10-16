@@ -39,5 +39,10 @@
         <p>Note min: <?php echo(minEtudiant($notes)) ?></p>
         <p>Note max: <?php echo(maxEtudiant($notes)) ?></p>
         <p>Meilleur étudiant: <?php echo(meilleurEtudiant($notes)) ?></p>
+        <p>Tentative de modifier un étudiant:
+            <?php try {$notes[0]->note = 20;} catch (Error $e) {
+                echo htmlspecialchars($e->getMessage());}
+            ?>
+        </p>
     </body>
 </html>
