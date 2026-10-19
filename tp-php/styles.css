@@ -14,6 +14,10 @@ table, th, td {
   width:250px;
 }
 
-input, label, textarea {
-  margin: 5px;
+.entree_formulaire {
+  margin: 8px;
+}
+
+.erreur {
+  color: red;
 }

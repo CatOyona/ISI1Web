@@ -67,7 +67,19 @@
     }
     
     function champ(string $cle): string {
-        $valeur = h($_POST[$cle]) ?? '';
+        $valeur = $_POST[$cle] ?? '';
         return is_string($valeur) ? trim($valeur) : '';
+    }
+
+    function champTab(string $cle): array {
+        $valeur = $_POST[$cle] ?? [];
+        if (!is_array($valeur)) {
+            return [];
+        }
+        return array_values(array_filter($valeur, 'is_string'));
+    }
+
+    function champBool(string $cle): bool {
+        return isset($_POST[$cle]);
     }
 ?>
