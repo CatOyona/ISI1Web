@@ -1,81 +1,43 @@
 <?php
     declare(strict_types=1);
+    session_start();
     require_once __DIR__ . '/fonctions.php';
-    $erreurs = [];
 
+    $messageConfirmation = $_SESSION['message'] ?? null;
+    unset($_SESSION['message']);
+
+    $erreurs = [];
     $nom = '';
     $email = '';
-    $age = 0;
+    $age = '';
     $filiere = '';
     $langages = [];
     $message = '';
     $reglement = false;
 
-    enum Langage: string {
-        case Cpp = 'C++';
-        case PYTHON = 'Python';
-        case JAVA = 'Java';
-        case PHP = 'PHP';
-    }
-
-    enum Filiere: string {
-        case INFO = 'INFO';
-        case MATH = 'MATH';
-        case PHYS = 'PHYS';
-        case AUTRE = 'AUTRE';
-    }
-
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $nom = champ('nom');
         $email = champ('email');
-        $age = (int) champ('age');
+        $age = champ('age');
         $filiere = champ('filiere');
         $langages = champTab('langages');
         $message = champ('message');
         $reglement = champBool('reglement');
 
-        //Nom obligatoire et entre 2 et 50 caracs
-        if ($nom === '') {
-            $erreurs['nom'] = "Le nom est obligatoire";
-        } elseif (mb_strlen($nom) > 50 || mb_strlen($nom) < 2) {
-            $erreurs['nom'] = "Le nom doit être compris entre 2 et 50 caractères.";
-        }
+        $erreurs = array_filter([
+            "nom" => validerNom($nom),
+            "email" => validerEmail($email),
+            "age" => validerAge($age),
+            "filiere" => validerFiliere($filiere),
+            "langages" => validerLangages($langages),
+            "message" => validerMessage($message),
+            "reglement" => validerReglement($reglement)
+        ]);
 
-        //Email au fomat valide et obligatoire
-        if (filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
-            $erreurs['email'] = 'Adresse mail invalide.';
-        }
-
-        //Âge entre 16 et 99
-        if ($age !== 0 && ($age < 16 || $age > 99)) {
-            $erreurs['age'] = "Âge compris entre 16 et 99.";
-        }
-
-        //Filière avec valeur autorisée
-        if (Filiere::tryfrom($filiere) === null) {
-            $erreurs['filiere'] = "Veuillez choisir une filière valide parmi la liste.";
-        }
-
-        //Au moins un choix de langage et parmi la liste autorisée
-        if ($langages === []) {
-            $erreurs['langages'] = "Veuillez choisir au moins un langage.";
-        } else {
-            foreach ($langages as $langage) {
-                if (Langage::tryFrom($langage) === null) {
-                    $erreurs['langages'] = "Veuillez choisir un langage parmi la liste.";
-                    break;
-                }
-            }
-        }
-
-        //Message avec 300 caracs max
-        if (mb_strlen($message) > 300) {
-            $erreurs['message'] = "Le message ne peut dépasser 300 caractères.";
-        }
-
-        //Règlement coché
-        if (!$reglement) {
-            $erreurs['reglement'] = "Veuillez accepter le règlement.";
+        if ($erreurs === []) {
+            $_SESSION['message'] = $nom.", votre inscription est réussie!";
+            header('Location: inscription.php');
+            exit;
         }
     }
 ?>
@@ -109,7 +71,7 @@
             
             <div class = "entree_formulaire">
                 <label>Votre âge :</label><br>
-                <input name="age" type="number" placeholder="19" min="16" max="99" value = "<?= $age > 0 ? h((string) $age) : "" ?>"><br>
+                <input name="age" type="number" placeholder="19" min="16" max="99" value = "<?= h($age) ?>"><br>
                 <?php if (isset($erreurs['age'])): ?>
                     <span class = "erreur" ><?= h($erreurs['age']) ?></span>
                 <?php endif; ?>
@@ -173,5 +135,8 @@
             <input class = "entree_formulaire" type="submit" value="Envoyer">
         </form>
     </fieldset>
+    <?php if ($messageConfirmation !== null): ?>
+        <h2 class = "confirmation"><?= h($messageConfirmation) ?></h2>
+    <?php endif; ?>
     </body>
 </html>

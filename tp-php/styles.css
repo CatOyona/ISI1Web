@@ -21,3 +21,7 @@ table, th, td {
 .erreur {
   color: red;
 }
+
+.confirmation {
+  text-align: center;
+}
