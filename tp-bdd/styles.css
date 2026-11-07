@@ -1,0 +1,27 @@
+table, th, td {
+  border:1px solid black;
+}
+
+.echec {
+  background-color: red;
+}
+
+.formulaire {
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto; 
+  margin-top: 50px;
+  width:250px;
+}
+
+.entree_formulaire {
+  margin: 8px;
+}
+
+.erreur {
+  color: red;
+}
+
+.confirmation {
+  text-align: center;
+}

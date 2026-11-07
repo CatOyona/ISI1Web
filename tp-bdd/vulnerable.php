@@ -20,7 +20,7 @@
 ?>
 <!DOCTYPE html>
 <html lang="fr">
-    <head><meta charset="utf-8"><title>Recherche (version vulnérable)</title></head>
+    <head><meta charset="utf-8"><title>Recherche</title></head>
     <body>
         <h1>Rechercher un utilisateur</h1>
         <form method="get">

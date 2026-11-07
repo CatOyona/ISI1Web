@@ -20,3 +20,24 @@
             echo '<div class="erreur">' . h($erreurs[$cle]) . '</div>';
         }
     }
+
+    function validerNom(string $nom): ?string {
+        if (preg_match('/^[A-Za-z0-9_]{3,30}\z/', $nom) !== 1) {
+            return "Le nom est obligatoire, entre 3 et 30 caractères, composé de chiffres, lettres et _";
+        }
+        return null;
+    }
+
+    function validerPassword(string $password): ?string {
+        if (mb_strlen($password) < 8) {
+            return "Le mot de passe doit au moins faire 8 caractères";
+        }
+        return null;
+    }
+
+    function validerCPassword(string $password, string $cpassword): ?string {
+        if ($password !== $cpassword) {
+            return "Les mots de passe ne correspondent pas";
+        }
+        return null;
+    }
